@@ -3,7 +3,8 @@ package com.rusinek.testingapp;
 /**
  * Created by Adrian Rusinek on 18.03.2019
  **/
-public class Money {
+public class Money implements Expression {
+
     protected int amount;
     protected String currency;
 
@@ -16,11 +17,11 @@ public class Money {
         return currency;
     }
 
-    public static Money dollar(int amount){
+    public static Money dollar(int amount) {
         return new Money(amount, "USD");
     }
 
-    public static Money franc(int amount){
+    public static Money franc(int amount) {
         return new Money(amount, "CHF");
     }
 
@@ -28,6 +29,11 @@ public class Money {
         Money money = (Money) object;
         return amount == money.amount
                 && this.currency == money.currency;
+    }
+
+    @Override
+    public Money reduce(String to) {
+        return this;
     }
 
     @Override
@@ -40,5 +46,9 @@ public class Money {
 
     public Money times(int multiplier) {
         return new Money(amount * multiplier, this.currency);
+    }
+
+    public Expression plus(Money addened) {
+        return new Sum(this,addened);
     }
 }
